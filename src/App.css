@@ -7,6 +7,11 @@ html, body {
   font-size: 2vw;
   margin: 0;
   overflow: hidden;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 Visualization {
@@ -15,6 +20,18 @@ Visualization {
 }
 
 .App {
+}
+
+.about {
+  background-color: #E6E6FA;
+  box-shadow: none !important;
+  display: none;
+  font-size: 1.2vw;
+  height: auto;
+  padding: 0.5em;
+  position: absolute;
+  width: 600px;
+  z-index: 3;
 }
 
 .box {
@@ -39,6 +56,16 @@ Visualization {
 
 .img {
   display: none;
+  cursor: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 /* INFO START */

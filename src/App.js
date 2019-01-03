@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import Emoji from 'react-emoji-render';
+import { ReactComponent as Map } from './cambridge-map.svg';
 
 function rgbToHex(r, g, b) {
   if (r > 255 || g > 255 || b > 255)
@@ -44,6 +45,8 @@ class Visualization extends Component {
     this.drawMap = this.drawMap.bind(this);
     this.drawImage = this.drawImage.bind(this);
     this.viewHistory = this.viewHistory.bind(this);
+    this.onImageMouseDown = this.onImageMouseDown.bind(this);
+    this.onImageMouseUp = this.onImageMouseUp.bind(this);
     this.sortCoords = this.sortCoords.bind(this);
     this.updateNodes = this.updateNodes.bind(this);
     this.onResize = this.onResize.bind(this);
@@ -92,9 +95,13 @@ class Visualization extends Component {
     var timer = setInterval( () => {
       this.setState({exponent: this.state.exponent+1});
       this.drawImage();
+      if(this.state.exponent === 0) {
+      }
       if( this.state.exponent > 3 ) {
+        document.getElementsByClassName('mosaic-g')[0].addEventListener('mousedown', this.onImageMouseDown);
+        document.getElementsByClassName('img')[0].addEventListener('mouseup', this.onImageMouseUp);
         clearInterval(timer);
-        this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, imgWidth: 0, imgHeight: 0, pixels: []});
+        this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, pixels: []});
         return;
       }
     }, 800);
@@ -119,7 +126,8 @@ class Visualization extends Component {
         var firstName = data.features[i].properties.First_Name;
         var lastName = data.features[i].properties.Last_Name;
         var location = data.features[i].properties.Location;
-        var coord = {x: x, y: y, id: id, category: category, material: material, size: size, title: title, year: year, firstName: firstName, lastName: lastName, location: location};
+        var about = data.features[i].properties.About;
+        var coord = {x: x, y: y, id: id, category: category, material: material, size: size, title: title, year: year, firstName: firstName, lastName: lastName, location: location, about: about};
         coordinates.push(coord);
         if(!this.state.finishLoading) fullCoordinates.push(coord);
         if(!materials.includes(material)) materials.push(material);
@@ -207,13 +215,14 @@ class Visualization extends Component {
                 .attr('height', 50)
                 .on('click', (d, i) => {
                   this.clearImage('mosaic');
-                  this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, imgWidth: 0, imgHeight: 0, pixels: []});
+                  this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, pixels: []});
                   this.setState({selectedId: d.id});
                   this.refs.title.innerHTML = d.title;
                   this.refs.name.innerHTML = d.lastName + ', ' + d.firstName;
                   this.refs.address.innerHTML = d.location;
                   this.refs.year.innerHTML = d.year;
                   this.refs.material.innerHTML = d.material;
+                  this.refs.about.innerHTML = d.about;
                   this.refs.info.style.color = '#2F4F4F';
                   this.refs.info.style.display = 'block';
                   var emojis = this.refs.emoji.children;
@@ -261,6 +270,24 @@ class Visualization extends Component {
     }
   }
 
+  onImageMouseDown(e) {
+    var img = document.getElementsByClassName('img')[0];
+    img.style.width = this.state.imgWidth + 'px';
+    img.style.height = this.state.imgHeight + 'px';
+    img.style.display = 'block';
+    var about = document.getElementsByClassName('about')[0];
+    if(about.innerHTML !== 'undefined') {
+      about.style.display = 'block';
+      about.style.top = e.clientY + 'px';
+      about.style.right = window.innerWidth - e.clientX + 'px';
+    }
+  }
+
+  onImageMouseUp() {
+    document.getElementsByClassName('img')[0].style.display = 'none';
+    document.getElementsByClassName('about')[0].style.display = 'none';
+  }
+
   sortCoords() {
     this.state.coordinates.sort( function(a, b) {
       return (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0);
@@ -302,7 +329,7 @@ class Visualization extends Component {
 
   render() {
     return ( <div>
-              <img ref='img' className='img'/ >
+              <img ref='img' className='img' draggable='false'/ >
               <svg className='map'/>
               <svg className='mosaic'/>
               <div className='ui'>
@@ -378,6 +405,7 @@ class Visualization extends Component {
                   <div className='address info-content' ref='address'></div>
                 </div>
               </div>
+              <div className='about box' ref='about'/>
               <canvas ref='canvas' className='canvas'/>
              </div> );
   }
