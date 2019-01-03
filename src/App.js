@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import axios from 'axios';
 import Emoji from 'react-emoji-render';
-import { ReactComponent as Map } from './cambridge-map.svg';
 
 function rgbToHex(r, g, b) {
   if (r > 255 || g > 255 || b > 255)
@@ -215,6 +214,7 @@ class Visualization extends Component {
                 .attr('height', 50)
                 .on('click', (d, i) => {
                   this.clearImage('mosaic');
+                  document.getElementsByClassName('mosaic-text')[0].style.display = 'none';
                   this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, pixels: []});
                   this.setState({selectedId: d.id});
                   this.refs.title.innerHTML = d.title;
@@ -231,8 +231,13 @@ class Visualization extends Component {
                     if(emojis[i].id !== material) emojis[i].style.display = 'none';
                     else emojis[i].style.display = 'inline';
                   }
-                  var img = (imageKeys.includes(d.id + '.jpg')) ? images[d.id + '.jpg'] : (imageKeys.includes(d.id + '.png')) ? images[d.id + '.png'] : images[d.id + '.gif'];
-                  this.loadImage(img);
+                  var img = (imageKeys.includes(d.id + '.jpg')) ? images[d.id + '.jpg'] : (imageKeys.includes(d.id + '.png')) ? images[d.id + '.png'] : (imageKeys.includes(d.id + '.gif')) ? images[d.id + '.gif'] : 0;
+                  if(img !== 0) {
+                    this.loadImage(img);
+                  }
+                  else {
+                    document.getElementsByClassName('mosaic-text')[0].style.display = 'block';
+                  }
                 });
   }
 
@@ -332,6 +337,7 @@ class Visualization extends Component {
               <img ref='img' className='img' draggable='false'/ >
               <svg className='map'/>
               <svg className='mosaic'/>
+              <Emoji text='no image :('className='mosaic-text box'/>
               <div className='ui'>
                 <div className='switches box'>
                   <div className='switch-block'>

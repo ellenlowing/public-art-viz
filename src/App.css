@@ -129,6 +129,19 @@ Visualization {
   cursor: help;
 }
 
+.mosaic-text {
+  background-color: #fff;
+  display: none;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  position: absolute;
+  /* height: 400px; */
+  right: 10px;
+  text-align: center;
+  top: 10px;
+  width: 400px;
+}
+
 .switches {
   background-color: #F1F8E9;
   display: block;
