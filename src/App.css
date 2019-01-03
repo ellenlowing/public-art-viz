@@ -1,32 +1,218 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
+html, body {
+  background-color: #FFFFF0;
+  color: #696969;
+  font-family: 'Inconsolata', monospace;
+  font-size: 2vw;
+  margin: 0;
+  overflow: hidden;
+}
+
+Visualization {
+  left: 0px;
+  top: 0px;
+}
+
 .App {
-  text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.box {
+  border: 1px solid black;
+  box-shadow: 4px 6px #D3D3D3;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.canvas {
+  display: none;
+  height: 600px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 600px;
 }
 
-.App-link {
-  color: #61dafb;
+.emoji {
+  display: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.img {
+  display: none;
+}
+
+/* INFO START */
+.info {
+  background-color: #FFFAFA;
+  color: #C0C0C0;
+  height: 11vh;
+  margin-left: 10px;
+  margin-right: 10px;
+  position: relative;
+  width: calc(100vw-20px);
+}
+
+.info-container {
+  display: inline-block;
+  height: 100%;
+  padding-left: 0.3em;
+  /* padding-right: 0.8em; */
+}
+
+.title-container {
+  height: 100%;
+  width: 60%;
+}
+
+.info-content {
+  display: block;
+  font-size: 1.2vw;
+  padding-top: 0.12em;
+  /* padding-left: 0.3em; */
+}
+
+.title {
+  font-size: 2vw;
+  position: relative;
+  top: -0.8vw;
+  width: auto;
+}
+
+/* INFO END */
+
+.map {
+  display: inline-block;
+  height: 85vh;
+  padding-top: 0.2em;
+  padding-left: 0.2em;
+  width: 80vw;
+  z-index: 99;
+}
+
+.mosaic {
+  display: block;
+  height: 600px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 600px;
+}
+
+.mosaic-g:hover {
+  cursor: help;
+}
+
+.switches {
+  background-color: #F1F8E9;
+  display: block;
+  position: relative;
+}
+
+.switch-block, .text-block {
+  display: inline-block;
+  position: relative;
+}
+
+.text-block {
+  top: 0px;
+}
+
+/* The switch - the box around the slider */
+.switch, .slider-text {
+  display: block;
+  font-size: 1vw;
+  height: 34px;
+  margin: 0.4rem;
+  position: relative;
+  width: 60px;
+}
+
+.slider-text {
+  width: auto;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #8FBC8B;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.time-btn {
+  background-color: #F0F8FF;
+  color: #696969;
+  display: block;
+  font-family: 'Inconsolata', monospace;
+  font-size: 1.3vw;
+  outline: none;
+  padding: 1.8em;
+  position: relative;
+  width: 100%;
+}
+
+.time-btn:link {
+  box-shadow: 4px 6px #D3D3D3;
+  outline: none;
+}
+
+.time-btn:hover {
+  cursor: grab;
+}
+
+.time-btn:active {
+  box-shadow: none;
+  outline: none;
+}
+
+.ui {
+  display: block;
+  padding: 0.1em;
+  position: absolute;
+  right: 10px;
+  top: 650px;
+  width: 16vw;
 }
