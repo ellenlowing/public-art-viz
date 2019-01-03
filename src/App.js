@@ -51,7 +51,9 @@ class Visualization extends Component {
     this.onResize = this.onResize.bind(this);
   }
 
+  /** Initialization **/
   componentDidMount() {
+    // Event listeners for toggle switches
     var switches = document.getElementsByClassName('switch-input');
     for(var i = 0; i < switches.length; i++) {
       var elem = switches[i];
@@ -72,9 +74,13 @@ class Visualization extends Component {
         this.drawMap();
       });
     }
+
+    // Event listener for view history button
     document.getElementsByClassName('time-btn')[0].addEventListener('click', (e) => {
       this.viewHistory();
     });
+
+    // Processes data
     this.loadData();
     window.addEventListener('resize', this.onResize);
 
@@ -82,14 +88,17 @@ class Visualization extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(this.state.finishLoading && this.state.finishLoading !== prevState.finishLoading) {
+      // After raw data is parsed and stored in coordinates array
       this.sortCoords();
       this.drawMap();
     }
     if(this.state.finishLoadingImage && this.state.finishLoadingImage !== prevState.finishLoadingImage) {
+      // After image is loaded
       this.startTimer();
     }
   }
 
+  /** Sets up timer to display mosaic **/
   startTimer() {
     var timer = setInterval( () => {
       this.setState({exponent: this.state.exponent+1});
@@ -106,6 +115,7 @@ class Visualization extends Component {
     }, 800);
   }
 
+  /** Parses raw data **/
   loadData() {
     axios.get('https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/master/Landmark/Public_Art/LANDMARK_PublicArt.geojson')
     .then(res => {
@@ -135,10 +145,11 @@ class Visualization extends Component {
       this.setState({coordinates: coordinates});
       this.setState({materials: materials});
       this.setState({finishLoading: true});
-      Object.freeze(fullCoordinates);
+      Object.freeze(fullCoordinates); // fullCoordinates is constant
     });
   }
 
+  /** Handler for toggle switches **/
   updateNodes(category, mode) {
     var coordinates = this.state.coordinates;
     if(mode === 'rm') {
@@ -164,6 +175,7 @@ class Visualization extends Component {
     this.setState({coordinates: coordinates});
   }
 
+  /** Loads image based on input file name and gets image data with canvas **/
   loadImage(inputSrc) {
     const ctx = this.refs.canvas.getContext('2d');
     var img = this.refs.img;
@@ -194,6 +206,7 @@ class Visualization extends Component {
     }
   }
 
+  /** Draws map with coordinates array **/
   drawMap() {
     const svg = d3.select('svg.map');
     var count = 0;
@@ -225,22 +238,25 @@ class Visualization extends Component {
                   this.refs.about.innerHTML = d.about;
                   this.refs.info.style.color = '#2F4F4F';
                   this.refs.info.style.display = 'block';
+                  // selects emoji to display inside the information section
                   var emojis = this.refs.emoji.children;
                   var material = d.material.replace(/\s/g, '').replace(/\//g, '').toLowerCase();
                   for(var i = 0; i < emojis.length; i++) {
                     if(emojis[i].id !== material) emojis[i].style.display = 'none';
                     else emojis[i].style.display = 'inline';
                   }
+                  // finds whether image is jpg / png / gif
                   var img = (imageKeys.includes(d.id + '.jpg')) ? images[d.id + '.jpg'] : (imageKeys.includes(d.id + '.png')) ? images[d.id + '.png'] : (imageKeys.includes(d.id + '.gif')) ? images[d.id + '.gif'] : 0;
                   if(img !== 0) {
                     this.loadImage(img);
                   }
                   else {
-                    document.getElementsByClassName('mosaic-text')[0].style.display = 'block';
+                    document.getElementsByClassName('mosaic-text')[0].style.display = 'block'; // if there is no image of work
                   }
                 });
   }
 
+  /** Draws mosaic based on this.state.exponent, which increments by 1 every 800 ms **/
   drawImage() {
     if(this.state.finishLoadingImage) {
       /* Define size of shape, which pixels to draw, and where to draw */
@@ -275,6 +291,7 @@ class Visualization extends Component {
     }
   }
 
+  /** Handler for mousedown on mosaic -- shows description and full image **/
   onImageMouseDown(e) {
     var img = document.getElementsByClassName('img')[0];
     img.style.width = this.state.imgWidth + 'px';
@@ -288,6 +305,7 @@ class Visualization extends Component {
     }
   }
 
+  /** Handler for mouseup on mosaic -- hides description **/
   onImageMouseUp() {
     document.getElementsByClassName('img')[0].style.display = 'none';
     document.getElementsByClassName('about')[0].style.display = 'none';
@@ -299,21 +317,28 @@ class Visualization extends Component {
     });
   }
 
+  /** Animates timeline of works **/
   viewHistory() {
+    // hiding all nodes
     var nodes = document.getElementsByClassName('map-node');
     for(var i = 0; i < nodes.length; i++) {
       nodes[i].style.display = 'none';
     }
+
+    // disables toggle switches
     var switches = document.getElementsByClassName('switch-input');
     for(var i = 0; i < switches.length; i++) {
       switches[i].disabled = true;
     }
+
+    // displaying one node every 50ms
     var it = 0;
     var timer = setInterval( () => {
       nodes[it].style.display = 'block';
       it++;
       if(it === nodes.length) {
         clearInterval(timer);
+        // re-enabling toggle switches
         for(var i = 0; i < switches.length; i++) {
           switches[i].disabled = false;
         }
@@ -321,10 +346,12 @@ class Visualization extends Component {
     }, 50);
   }
 
+  /** Helper function that clears svg **/
   clearImage(className) {
     d3.selectAll('svg.' + className + '> *').remove();
   }
 
+  /** Resize handler, but not handles all elements **/
   onResize() {
     this.clearImage('map');
     this.loadData();
