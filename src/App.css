@@ -132,6 +132,7 @@ Visualization {
 .mosaic-text {
   background-color: #fff;
   display: none;
+  font-size: 1.5vw;
   padding-top: 4rem;
   padding-bottom: 4rem;
   position: absolute;

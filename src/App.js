@@ -53,6 +53,7 @@ class Visualization extends Component {
 
   /** Initialization **/
   componentDidMount() {
+    document.title = 'Cambridge Public Art Viz';
     // Event listeners for toggle switches
     var switches = document.getElementsByClassName('switch-input');
     for(var i = 0; i < switches.length; i++) {

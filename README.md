@@ -1,12 +1,15 @@
 # Public art data visualization exercise with React, D3, and canvas
 
+## App preview
+<img src='./preview.png' alt='App preview' width='80%'/>
+
 ## Inspiration
 When I was traveling in Nantes, France, I got to explore its beautiful collection of public artworks (sculptures, machines, architecture). However, it was almost impossible to avoid seeing what the works look like when preparing for the trip. Although it was still a pleasant journey, my prior research really ruined the surprise of what Nantes has to offer.
 
 Therefore, with the public art dataset available on Cambridge Open Data, I decided to create a map visualization that does not only list all locations but also unveils part of the works in various ways without explicitly showing its look in the beginning. In order to prepare viewers with what to expect on site, a color palette is generated from an image of the selected work with the use of D3. The material of each work is also represented by an emoji spread throughout the map. Because emojis often feature common or well-known things, using these symbols that people are mostly familiar with creates a rather tangible dimension to the works as compared to plain text. These interactions are designed in a way such that viewers feel a closer connection to the works before their visit.
 
 ## Explanation
-The interface can be divided to several components: map, mosaic (color palette), toggle switches for categories, button to view history, and an information section for the works' details. 
+The interface can be divided to several components: map, mosaic (color palette), toggle switches for categories, button to view history, and an information section for the works' details.
 
 As the program loads, *loadData()* obtains public art dataset from [https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/master/Landmark/Public_Art/LANDMARK_PublicArt.geojson](https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/master/Landmark/Public_Art/LANDMARK_PublicArt.geojson) in json format and extracts useful data and stores as state variables. Because the x and y coordinates of each node in geojson dataset are with respect to global context, I found the maximum and minimum of points in this particular set and mapped the locations to screen size.
 
@@ -28,4 +31,3 @@ The map is drawn with *drawMap()*. It takes state variable *coordinates* array a
 
 ## How to run
 Run `npm start` or `yarn start` to run app in dev mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
