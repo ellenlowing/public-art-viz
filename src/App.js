@@ -103,10 +103,8 @@ class Visualization extends Component {
     var timer = setInterval( () => {
       this.setState({exponent: this.state.exponent+1});
       this.drawImage();
-      if(this.state.exponent === 0) {
-      }
       if( this.state.exponent > 3 ) {
-        document.getElementsByClassName('mosaic-g')[0].addEventListener('mousedown', this.onImageMouseDown);
+        if(document.getElementsByClassName('mosaic-g') === null) document.getElementsByClassName('mosaic-g')[0].addEventListener('mousedown', this.onImageMouseDown);
         document.getElementsByClassName('img')[0].addEventListener('mouseup', this.onImageMouseUp);
         clearInterval(timer);
         this.setState({finishLoadingImage: false, selectedId: -1, exponent: 0, pixels: []});
