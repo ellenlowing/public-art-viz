@@ -1,7 +1,8 @@
-# Public art data visualization exercise with React, D3, and canvas
+# Public art data visualization with React, D3, and canvas
 
 ## App preview
 <img src='./preview.png' alt='App preview' width='80%'/>
+Best enjoyed at 1280x625 screen! :P
 
 ## Inspiration
 When I was traveling in Nantes, France, I got to explore its beautiful collection of public artworks (sculptures, machines, architecture). However, it was almost impossible to avoid seeing what the works look like when preparing for the trip. Although it was still a pleasant journey, my prior research really ruined the surprise of what Nantes has to offer.
